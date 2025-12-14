@@ -4,11 +4,6 @@ import { addItem } from './CartSlice';
 import CartItem from './CartItem';
 import './ProductList.css';
 
-const calculateTotalQuantity = () => {
-  return cart.reduce((total, item) => total + item.quantity, 0);
-};
-
-
 
 
 function ProductList({ onHomeClick }) {
@@ -17,7 +12,14 @@ function ProductList({ onHomeClick }) {
   const [addedToCart, setAddedToCart] = useState({}); // Track added products
 
   const dispatch = useDispatch();
-  const cart = useSelector(state => state.cart.items);
+  const cart = useSelector(state => state.cart.items) || [];
+
+const calculateTotalQuantity = () => {
+  return cart && cart.length > 0
+    ? cart.reduce((total, item) => total + item.quantity, 0)
+    : 0;
+};
+
   const styleObj = {
   backgroundColor: '#4CAF50',
   color: '#fff',
@@ -159,6 +161,7 @@ const styleA = {
 </div>
 
             </div>
+            </div>
 
       {!showCart ? (
         <div className="product-grid">
@@ -191,5 +194,4 @@ const styleA = {
     </div>
   );
 }
-
 export default ProductList;
